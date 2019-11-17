@@ -1,0 +1,41 @@
+classdef FilterSetClass
+    properties
+        fields
+        SpectralStructure
+        mincutoff
+        maxcutoff
+        transmissionrange
+        Wavelengths
+        numberlambda
+        Filter
+        Spectrum
+        filterwidthvec
+        SCOMval
+
+    end
+    methods
+        function out = init(FilterSet, SpectralStructurein,...
+                filterwidthvecin, mincutoffin, maxcutoffin)
+            FilterSet.fields = filednames(SpectralStructurein);
+            SpectralStructure = SpectralStructurein;
+            for ii = 1:numel(FilterSet.fields)
+                SpectralStructure.(FilterSet.fields{ii}).Filter(:) =...
+                singel(1);
+                SpectralStructure(.FilterSet.fields{ii}).Wavle
+            FilterSet.mincutoff = single(mincutoffin);
+            FilterSet.maxcutoff = single(maxcutoffin);
+            FilterSet.transmissionrange = FilterSet.maxcutoff-...
+                FilterSet.mincutoff;
+            FilterSet.Wavelengths = single(SpectralStructurein.Wavelengths);
+            FilterSet.numberlambda = numel(FitlerSet.Wavelengths);
+            FilterSet.Filter = single(SpectralStructurein.Filter);
+            FilterSet.Spectrum = single(SpectralStructurein.Spectrum);
+            %filterwidthvecin consists of numbers, the relative size of
+            %which relates to the relative width of the spectral bins.
+            %These widths are normalized such that their sum is one and
+            %then the vector is multiplied by the transmission range so
+            %that the elements of filterwidthvec give the width of the
+            %spectral bins in microns
+            FilterSet.filterwidthvec = single(FilterSet.transmissionrange.*...
+                (filterwidthvecin./sum(filterwidthvecin))); 
+            FilterSet.SCOMval = SCOM(FilterSet.Spectrum,FilterSet.Wavelengths);
